@@ -12,6 +12,6 @@ export class Product{
     @Column('decimal', {default: 0})
     quantity: number;
 
-    @OneToMany(() => ProductImage, (productImage) => productImage.product)
+    @OneToMany(() => ProductImage, (productImage) => productImage.product, {cascade: true})
     productImage: ProductImage[];
 }

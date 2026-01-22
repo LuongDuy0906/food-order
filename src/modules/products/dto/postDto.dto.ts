@@ -1,12 +1,12 @@
 import { Type } from "class-transformer";
-import { IsInt, IsPositive, IsString } from "class-validator";
+import { IsInt, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class PostDTO{
-    @IsString({groups: ["create"]})
+    @IsString()
     name: string;
     
     @Type(() => Number)
-    @IsInt({groups: ["create"]})
+    @IsInt()
     @IsPositive({message: "tuoi phai la so lon hon 0", always: true})
     quantity: number;
 }

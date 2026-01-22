@@ -50,10 +50,18 @@ export class ProductsController {
     }
 
     @Put('/:id')
-    async update(@Param('id') id: number, @Body() body: PutDTO, @Res() res: Response){
-        let product: Product;
+    @UseInterceptors(FilesInterceptor('images', 5, {
+        storage: diskStorage({
+                destination: './upload/products',
+                filename: editFileName
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async update(@Param('id') id: number, @Body() body: PutDTO, @UploadedFiles() files: Express.Multer.File[], @Res() res: Response){
+        let product;
         try {
-            product = await this.productService.updateProduct(id, body);
+            product = await this.productService.updateProduct(id, body, files);
             return res.status(HttpStatus.ACCEPTED).json(new GetDTO(product));
         } catch (error) {
             return res.status(HttpStatus.BAD_REQUEST).json({error: error.message});
